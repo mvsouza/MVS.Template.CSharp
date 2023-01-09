@@ -10,7 +10,7 @@ namespace MVS.Template.CSharp.Application.Validation
     {
         public SolveCalculusCommandValidation()
         {
-            RuleFor(command => command.Calculus).NotEmpty().WithMessage("\"Calculus\" field should'nt be empty.");
+            RuleFor(command => command.Calculus).NotEmpty().WithMessage("\"Calculus\" field shouldn't be empty.");
         }
     }
 }
