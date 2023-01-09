@@ -4,22 +4,18 @@ nuget Fake.IO.FileSystem
 nuget Fake.Core.Target 
 nuget FSharp.Data 
 nuget Fake.DotNet.Testing.Coverlet
-nuget Fake.Testing.ReportGenerator 
+nuget Fake.Testing.ReportGenerator
 nuget Fake.Runtime //"
 
 #load ".fake/build.fsx/intellisense.fsx"
 
 open Fake.Core
 open Fake.DotNet
-open Fake.DotNet.NuGet
 open Fake.DotNet.Testing
 open Fake.IO
-open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 open Fake.Core.TargetOperators
 open Fake.Testing
-open FSharp.Data
-open System
 
 let artifacts = __SOURCE_DIRECTORY__ + "/artifacts"
 

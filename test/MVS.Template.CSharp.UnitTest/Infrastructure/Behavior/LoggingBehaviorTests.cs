@@ -25,7 +25,7 @@ namespace MVS.Template.CSharp.UnitTest.Infrastructure.Behavior
         {
             
             var expectedResult = 1;
-            var result = await _behavior.Handle(new LogFakeCommand(), default(CancellationToken), solveResult(expectedResult));
+            var result = await _behavior.Handle(new LogFakeCommand(), solveResult(expectedResult), default);
             _logger.VerifyLogHasMessage("Handling LogFakeCommand");
             _logger.VerifyLogHasMessage("Handled LogFakeCommand");
             Assert.Equal(expectedResult, result);

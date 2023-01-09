@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
+using MediatR;
 using Moq;
 using MVS.Template.CSharp.Application.Behavior;
 using Xunit;
@@ -30,12 +31,13 @@ namespace MVS.Template.CSharp.UnitTest.Application.Behavior
         public async Task Should_run_next_when_there_is_no_validatior_Async()
         {
             _validators = new IValidator<object>[0];
-            var behavior = new ValidatorBehavior<object, object>(_validators);
-            await behavior.Handle(new object(), default(CancellationToken), async () => {
+            var behavior = new ValidatorBehavior<IRequest<object>, object>(_validators);
+            var requestMock = new Mock<IRequest<object>>();
+            await behavior.Handle(requestMock.Object, async () => {
                 await Task.Delay(1);
                 _delegateHaveBeenCalled = true;
                 return new Object();
-            });
+            }, default);
             Assert.True(_delegateHaveBeenCalled);
         }
 
@@ -43,8 +45,9 @@ namespace MVS.Template.CSharp.UnitTest.Application.Behavior
         public async Task Should_run_next_when_there_is_no_validatior()
         {
             _validators = new IValidator<object>[0];
-            var behavior = new ValidatorBehavior<object, object>(_validators);
-            await behavior.Handle(new object(), default(CancellationToken), NextHandle);
+            var behavior = new ValidatorBehavior<IRequest<object>, object>(_validators);
+            var requestMock = new Mock<IRequest<object>>();
+            await behavior.Handle(requestMock.Object, NextHandle, default);
             Assert.True(_delegateHaveBeenCalled);
         }
 
@@ -57,8 +60,9 @@ namespace MVS.Template.CSharp.UnitTest.Application.Behavior
 
             _validators[0] = _validator.Object;
 
-            var behavior = new ValidatorBehavior<object, object>(_validators);
-            await behavior.Handle(new object(), default(CancellationToken), NextHandle);
+            var behavior = new ValidatorBehavior<IRequest<object>, object>(_validators);
+            var requestMock = new Mock<IRequest<object>>();
+            await behavior.Handle(requestMock.Object, NextHandle, default);
             Assert.True(_delegateHaveBeenCalled);
         }
         [Fact]
@@ -71,10 +75,11 @@ namespace MVS.Template.CSharp.UnitTest.Application.Behavior
 
             _validators[0] = _validator.Object;
 
-            var behavior = new ValidatorBehavior<object, object>(_validators);
+            var requestMock = new Mock<IRequest<object>>();
+            var behavior = new ValidatorBehavior<IRequest<object>, object>(_validators);
             Assert.False(_delegateHaveBeenCalled);
             Assert.ThrowsAsync<ValidationException>(async () => {
-                await behavior.Handle(new object(), default(CancellationToken), NextHandle);
+                await behavior.Handle(requestMock.Object, NextHandle, default);
             });
 
         }
