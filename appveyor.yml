@@ -1,17 +1,8 @@
-image: Visual Studio 2019
-before_build:
-- choco install opencover.portable
-- choco install codecov
-- choco install msbuild-sonarqube-runner
-- ps: |
-        Invoke-WebRequest https://raw.githubusercontent.com/rajivharris/Set-PsEnv/master/Set-PsEnv.psm1 -OutFile "..\Set-PsEnv.psm1"
-        Import-Module '..\Set-PsEnv.psm1'
-build:
-  project: MVS.Template.CSharp.sln
-  verbosity: minimal
-test_script:
-  - ps: .\MVS.Template.CSharp.ps1 sonarCloudBuild
- 
+
+image: Visual Studio 2022
+platform: Any CPU
+build_script:
+  - fake.cmd run build.fsx -t Pipeline 
 branches:
   only:
     - develop

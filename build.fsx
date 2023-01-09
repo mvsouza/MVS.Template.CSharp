@@ -5,7 +5,9 @@ nuget Fake.Core.Target
 nuget FSharp.Data 
 nuget Fake.DotNet.Testing.Coverlet
 nuget Fake.Testing.ReportGenerator
-nuget Fake.Runtime //"
+nuget Fake.Runtime 
+nuget Microsoft.Build 17.3.0
+nuget Microsoft.Build.Framework 17.3.0 //"
 
 #load ".fake/build.fsx/intellisense.fsx"
 
@@ -22,7 +24,7 @@ let artifacts = __SOURCE_DIRECTORY__ + "/artifacts"
 
 let coverageSource = fun (p: Coverlet.CoverletParams) ->
     { p with
-        OutputFormat = Coverlet.OutputFormat.OpenCover
+        OutputFormat = [Coverlet.OutputFormat.OpenCover]
         Include = [
             "MVS.Template.CSharp.*", "*"
         ] 
@@ -36,7 +38,7 @@ let coverageSource = fun (p: Coverlet.CoverletParams) ->
 
 let coverageOutput = fun (config: Coverlet.CoverletParams) ->
     { config with
-        OutputFormat = Coverlet.OutputFormat.OpenCover
+        OutputFormat = [Coverlet.OutputFormat.OpenCover]
         Output = __SOURCE_DIRECTORY__ + "/coverage.xml"
     } |> coverageSource
 
